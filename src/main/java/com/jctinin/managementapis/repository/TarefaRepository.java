@@ -7,5 +7,5 @@ import com.jctinin.managementapis.entity.Tarefa;
 
 @Repository
 public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
-
+  
 }

@@ -45,4 +45,8 @@ public class PessoaService {
 
   }
 
+  public void removePessoa(Long id) {
+    pessoaRepository.deleteById(id);
+  }
+
 }

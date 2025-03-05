@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
-
-
-
 @RestController
 @RequestMapping("/pessoas")
 public class PessoaController {
@@ -47,6 +44,12 @@ public class PessoaController {
     }else{
       return ResponseEntity.ok(pessoaAtualizada);
     }
+  }
+
+  @DeleteMapping("/{id}")
+  private ResponseEntity<Pessoa> removePessoa(@PathVariable Long id) {
+    pessoaService.removePessoa(id);
+    return ResponseEntity.ok().build();
   }
 
 }
