@@ -2,6 +2,8 @@ package com.jctinin.managementapis.entity;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -20,11 +22,17 @@ public class Tarefa {
   @Column(nullable = false)
   private LocalDate prazo;
 
+  @ManyToOne
+  @JoinColumn(name = "departamento_id", nullable = false)
+  @JsonBackReference
+  private Departamento departamento;
+
   @Column(nullable = false)
   private float duracao;
 
   @ManyToOne
   @JoinColumn(name = "pessoa_id", nullable = false)
+  @JsonBackReference
   private Pessoa pessoa;
 
   @Column(nullable = false)
@@ -34,9 +42,6 @@ public class Tarefa {
     return id;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
 
   public String getTitulo() {
     return titulo;
@@ -62,6 +67,14 @@ public class Tarefa {
     this.prazo = prazo;
   }
 
+  public Departamento getDepartamento() {
+    return departamento;
+  }
+
+  public void setDepartamento(Departamento departamento) {
+    this.departamento = departamento;
+  }
+
   public float getDuracao() {
     return duracao;
   }
@@ -85,7 +98,6 @@ public class Tarefa {
   public void setConcluida(boolean concluida) {
     this.concluida = concluida;
   }
-
 
 
 }

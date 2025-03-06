@@ -6,7 +6,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jctinin.managementapis.dto.CriaPessoaDTO;
+import com.jctinin.managementapis.entity.Departamento;
 import com.jctinin.managementapis.entity.Pessoa;
+import com.jctinin.managementapis.repository.DepartamentoRepository;
 import com.jctinin.managementapis.repository.PessoaRepository;
 
 @Service
@@ -15,17 +18,28 @@ public class PessoaService {
   @Autowired
   private PessoaRepository pessoaRepository;
 
+  @Autowired
+  private DepartamentoRepository departamentoRepository;
+
   public List<Pessoa> listPessoas() {
     return pessoaRepository.findAll();
   }
 
-  public void createPessoa(Pessoa pessoa) {
+  public void criaPessoa(CriaPessoaDTO pessoaDTO) {
 
-    try {
-      pessoaRepository.save(pessoa);
-    } catch (Exception e) {
-      System.out.println("Error: " + e.getMessage());
-    }
+    Departamento departamento = departamentoRepository.findByTitulo(pessoaDTO.getDepartamento())
+        .orElseGet(() -> {
+          Departamento novoDepartamento = new Departamento();
+          novoDepartamento.setTitulo(pessoaDTO.getDepartamento());
+          return departamentoRepository.save(novoDepartamento);
+
+        });
+
+        Pessoa pessoa = new Pessoa();
+        pessoa.setNome(pessoaDTO.getNome());
+        pessoa.setDepartamento(departamento);
+
+        pessoaRepository.save(pessoa);
 
   }
 

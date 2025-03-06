@@ -3,6 +3,9 @@ package com.jctinin.managementapis.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 
@@ -16,18 +19,17 @@ public class Pessoa {
   @Column(nullable = false)
   private String nome;
 
-  @Column(nullable = false)
-  private String departamento;
+  @JsonBackReference
+  @ManyToOne
+  @JoinColumn(name = "departamento_id", nullable = false)
+  private Departamento departamento;
 
+  @JsonManagedReference
   @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<Tarefa> tarefas;
 
   public Long getId() {
     return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
   }
 
   public String getNome() {
@@ -38,11 +40,11 @@ public class Pessoa {
     this.nome = nome;
   }
 
-  public String getDepartamento() {
+  public Departamento getDepartamento() {
     return departamento;
   }
 
-  public void setDepartamento(String departamento) {
+  public void setDepartamento(Departamento departamento) {
     this.departamento = departamento;
   }
 

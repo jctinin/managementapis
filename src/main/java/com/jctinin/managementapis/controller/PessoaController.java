@@ -1,7 +1,6 @@
 package com.jctinin.managementapis.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-
+import com.jctinin.managementapis.dto.CriaPessoaDTO;
 import com.jctinin.managementapis.entity.Pessoa;
 import com.jctinin.managementapis.service.PessoaService;
 
@@ -11,28 +10,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
-
 
 @RestController
 @RequestMapping("/pessoas")
 public class PessoaController {
-
 
   @Autowired
   private PessoaService pessoaService;
 
   @GetMapping
   public ResponseEntity<List<Pessoa>> listPessoas() {
-      List<Pessoa> pessoas = pessoaService.listPessoas();
-      return ResponseEntity.ok(pessoas);
+    List<Pessoa> pessoas = pessoaService.listPessoas();
+    return ResponseEntity.ok(pessoas);
   }
 
-
   @PostMapping
-  private ResponseEntity<Pessoa> createPessoa(@RequestBody Pessoa pessoa) {
-    pessoaService.createPessoa(pessoa);
-    return ResponseEntity.ok().build();
+  private ResponseEntity<Pessoa> criaPessoa(@RequestBody CriaPessoaDTO pessoaDTO) {
+    pessoaService.criaPessoa(pessoaDTO);
+    return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @PutMapping("/{id}")
@@ -41,7 +36,7 @@ public class PessoaController {
     Pessoa pessoaAtualizada = pessoaService.alteraPessoa(id, pessoa);
     if (pessoaAtualizada == null) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }else{
+    } else {
       return ResponseEntity.ok(pessoaAtualizada);
     }
   }
